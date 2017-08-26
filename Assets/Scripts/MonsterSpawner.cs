@@ -36,6 +36,11 @@ public class MonsterSpawner : MonoBehaviour
     {
         return Monsters.Count;
     }
+
+    public GameObject GetGO()
+    {
+        return gameObject;
+    }
     
     public Vector3 GetRandomPoint()
     {
@@ -75,5 +80,17 @@ public class MonsterSpawner : MonoBehaviour
             monster.owner = toWhom;
         }
         return monster;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var assignedUser in AssignedUsers)
+        {
+            if (assignedUser != null)
+            {
+                assignedUser.fsm.SetState("OnSpawnRemoved");
+            }
+        }
+        GameManager.Instance.MonsterSpawners.Remove(this);
     }
 }

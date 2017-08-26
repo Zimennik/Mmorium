@@ -51,9 +51,13 @@ public class User : MonoBehaviour
         return monsterSpawner;
     }
 
+    public bool IsSpawnExist(MonsterSpawner target)
+    {
+        return target != null;
+    }
+
     public void OnMobKilled(Monster monster)
     {
-        Debug.Log("Mob killed!?");
        // fsm.SendEvent("MonsterKilled");
     }
     

@@ -35,8 +35,11 @@ public class GameManager : MonoBehaviour
     public MonsterSpawner GetFreeMonsterSpawn(User user)
     {
         List<MonsterSpawner> spawns = MonsterSpawners.FindAll(x => x.IsThereAFreeSpace());
+        
 
-        MonsterSpawner monsterSpawner = spawns.MinBy(x => Vector3.Distance(user.transform.position, x.GetPosition()));
+            MonsterSpawner monsterSpawner = null;
+        if (spawns.Count > 0)
+        monsterSpawner = spawns.MinBy(x => Vector3.Distance(user.transform.position, x.GetPosition()));
             
             
         if (monsterSpawner != null)

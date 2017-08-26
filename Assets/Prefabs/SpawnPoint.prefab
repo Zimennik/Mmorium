@@ -408,7 +408,7 @@ MonoBehaviour:
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 30
+          value: 6
         fsmBoolParams: []
         fsmVector2Params: []
         fsmVector3Params: []

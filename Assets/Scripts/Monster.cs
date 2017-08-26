@@ -55,6 +55,7 @@ public class Monster : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+
 	//todo
 	public void OnOutOfRange()
 	{
