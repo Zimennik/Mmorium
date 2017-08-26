@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    [SerializeField] private int capability = 5;
+    [SerializeField] private int capacity = 5;        //Вместимость для монстров/юзеров
     [SerializeField] private Monster monsterPrefab;
-    private List<Monster> Monsters;
+    public List<Monster> Monsters;
     public List<User> AssignedUsers;                //Юзеры на этой зоне спавна
 
 
     public bool IsThereAFreeSpace()
     {
-        return AssignedUsers.Count < capability;
+        return AssignedUsers.Count < capacity;
     }
 
     public void Awake()
@@ -25,6 +25,16 @@ public class MonsterSpawner : MonoBehaviour
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    public int GetCapacity()
+    {
+        return capacity;
+    }
+
+    public int GetMonstersCount()
+    {
+        return Monsters.Count;
     }
     
     public Vector3 GetRandomPoint()
@@ -39,6 +49,12 @@ public class MonsterSpawner : MonoBehaviour
         monster.transform.parent = transform;
         monster.SetSpawner(this);
         Monsters.Add(monster);
+    }
+
+    public void OnMonsterKilled(Monster monster)
+    {
+        Monsters.Remove(monster);
+        //SpawnNewMonster();
     }
 
     public void OnUserAssign(User user)
@@ -56,7 +72,7 @@ public class MonsterSpawner : MonoBehaviour
         Monster monster = Monsters.FirstOrDefault(x => x.owner == null);
         if (monster != null)
         {
-            OnUserAssign(toWhom);
+            monster.owner = toWhom;
         }
         return monster;
     }

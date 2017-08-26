@@ -1,17 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using HutongGames.PlayMaker;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-	private int hitPoints;
+	private int hitPoints = 100;
 	private int expForMonster = 5;
 	private MonsterSpawner spawner;
 	public User owner;
+	public PlayMakerFSM fsm;
 
 	public void SetSpawner(MonsterSpawner spawner)
 	{
 		this.spawner = spawner;
+	}
+
+	private void Awake()
+	{
+		owner = null;
+	}
+
+	public GameObject GetMonsterGO()
+	{
+		return this.gameObject;
 	}
 
 	public Vector3 GetRandomPoint()
@@ -19,22 +31,28 @@ public class Monster : MonoBehaviour
 		return spawner.GetRandomPoint();
 	}
 	
-	public bool GetHit(int damage, User user)
+	public void GetHit(int damage, User user)
 	{
-		bool isAlive = true;
+		fsm.SendEvent("GetHit");
+		
+		
 		hitPoints -= damage;
 		if (hitPoints <= 0)
 		{
-			isAlive = false;
+			user.OnMobKilled(this);
 			OnDeath(user);
 		}
-		return isAlive;
+	}
+
+	public void AttackOwner()
+	{
+		//owner todo
 	}
 	
-	//todo
 	public void OnDeath(User killer)
 	{
-		//killer.Expirience += expForMonster;
+		spawner.OnMonsterKilled(this);
+		Destroy(gameObject);
 	}
 
 	//todo

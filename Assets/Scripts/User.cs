@@ -10,7 +10,9 @@ public class User : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     private Monster Target;
     private MonsterSpawner currentMonsterSpawner;
-    
+    public float CD = 1;
+
+    public PlayMakerFSM fsm;
 
     //private Fsm stateMachine;
 
@@ -29,9 +31,9 @@ public class User : MonoBehaviour
         }
     }
 
-    public void Awake()
+    public float GetCD()
     {
-        //stateMachine = GetComponent<Fsm>();
+        return CD;
     }
     
     public Vector3 GetRandomPointToWalk()
@@ -48,18 +50,23 @@ public class User : MonoBehaviour
         }
         return monsterSpawner;
     }
-    
+
+    public void OnMobKilled(Monster monster)
+    {
+        Debug.Log("Mob killed!?");
+       // fsm.SendEvent("MonsterKilled");
+    }
     
 
     public void DealDamage(Monster target)
     {
-        //stateMachine.Event("OnMonsterKilled");
+        target.GetHit(Random.Range(minDamage, maxDamage),this);
     }
 
     [SerializeField] private int level;
     private int hitPoints;
-    private int minDamage;
-    private int maxDamage;
+    private int minDamage=10;
+    private int maxDamage=15;
     
     
     

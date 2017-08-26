@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+
 using UnityEngine;
 using UnityEngine.AI;
-
+using MoreLinq;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -34,7 +34,11 @@ public class GameManager : MonoBehaviour
 
     public MonsterSpawner GetFreeMonsterSpawn(User user)
     {
-        MonsterSpawner monsterSpawner = MonsterSpawners.FirstOrDefault(x => x.IsThereAFreeSpace());
+        List<MonsterSpawner> spawns = MonsterSpawners.FindAll(x => x.IsThereAFreeSpace());
+
+        MonsterSpawner monsterSpawner = spawns.MinBy(x => Vector3.Distance(user.transform.position, x.GetPosition()));
+            
+            
         if (monsterSpawner != null)
         {
             monsterSpawner.OnUserAssign(user);
