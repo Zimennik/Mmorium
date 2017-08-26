@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public List<MonsterSpawner> MonsterSpawners;
 
     void Awake()
     {
@@ -28,6 +30,17 @@ public class GameManager : MonoBehaviour
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, 30, 1);
         return hit.position;
+    }
+
+    public MonsterSpawner GetFreeMonsterSpawn(User user)
+    {
+        MonsterSpawner monsterSpawner = MonsterSpawners.FirstOrDefault(x => x.IsThereAFreeSpace());
+        if (monsterSpawner != null)
+        {
+            monsterSpawner.OnUserAssign(user);
+        }
+        
+        return monsterSpawner;
     }
     
     
